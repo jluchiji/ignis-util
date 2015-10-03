@@ -5,7 +5,6 @@
  * @license MIT
  */
 
-import _           from 'lodash';
 import Bluebird    from 'bluebird';
 
 /**

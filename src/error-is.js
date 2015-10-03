@@ -37,7 +37,10 @@ export default function errorIs(error, criteria) {
     return (error instanceof criteria);
   }
 
-  let name = error.name || (error.constructor && error.constructor.name) || '';
+  const name =
+    error.name ||
+    (error.constructor && error.constructor.name) ||
+    '';
 
   /* If criteria is a string... */
   if (typeof criteria === 'string') {
