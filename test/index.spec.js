@@ -9,6 +9,7 @@ var Chai           = require('chai');
 Chai.use(require('sinon-chai'));
 Chai.use(require('chai-as-promised'));
 
+require('./deep-for-each.spec.js');
 require('./error-is.spec.js');
 require('./expressify.spec.js');
 require('./unpromisify.spec.js');

@@ -4,7 +4,6 @@
  * @author  Denis-Luchkin-Zhou <denis@ricepo.com>
  * @license MIT
  */
-/* jshint -W030 */
 
 var Sinon          = require('sinon');
 var Chai           = require('chai');

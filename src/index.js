@@ -12,3 +12,5 @@ exports.expressify  = require('./expressify');
 exports.unpromisify = require('./unpromisify');
 
 exports.symbol      = require('./symbol');
+
+exports.deepForEach = require('./deep-for-each');
