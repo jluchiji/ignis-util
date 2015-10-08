@@ -7,6 +7,9 @@
     "test": "./node_modules/.bin/gulp coverage && ./node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info",
     "build": "./node_modules/.bin/gulp build"
   },
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jluchiji/ignis-util.git"
