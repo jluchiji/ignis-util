@@ -5,26 +5,26 @@
  * @license MIT
  */
 
-var Sinon          = require('sinon');
-var Chai           = require('chai');
-var Bluebird       = require('bluebird');
+const Sinon          = require('sinon');
+const Chai           = require('chai');
+const Bluebird       = require('bluebird');
 
 Chai.use(require('chai-as-promised'));
-var expect         = Chai.expect;
+const expect         = Chai.expect;
 
-var expressify     = require('../lib/expressify');
+const expressify     = require('../lib/expressify');
 
 
 describe('expressify(2)', function() {
 
   it('should produce an express middleware', function() {
-    var fn = Sinon.spy(function() { return Bluebird.resolve('foo'); });
-    var next = Sinon.spy();
-    var res = { };
+    const fn = Sinon.spy(function() { return Bluebird.resolve('foo'); });
+    const next = Sinon.spy();
+    const res = { };
     res.status = Sinon.spy(function() { return res; });
     res.send   = Sinon.spy(function() { return res; });
 
-    var wrapped = expressify(fn);
+    const wrapped = expressify(fn);
 
     expect(wrapped).to.be.a('function');
     return wrapped(null, res, next).finally(function() {
@@ -39,14 +39,14 @@ describe('expressify(2)', function() {
   });
 
   it('should correctly propagate errors', function() {
-    var err = new Error();
-    var fn = Sinon.spy(function() { return Bluebird.reject(err); });
-    var next = Sinon.spy();
-    var res = { };
+    const err = new Error();
+    const fn = Sinon.spy(function() { return Bluebird.reject(err); });
+    const next = Sinon.spy();
+    const res = { };
     res.status = Sinon.spy(function() { return res; });
     res.send   = Sinon.spy(function() { return res; });
 
-    var wrapped = expressify(fn);
+    const wrapped = expressify(fn);
 
     expect(wrapped).to.be.a('function');
     return wrapped(null, res, next).finally(function() {
@@ -59,18 +59,35 @@ describe('expressify(2)', function() {
   });
 
   it('should support custom status codes', function() {
-    var fn = Sinon.spy(function() { return Bluebird.resolve('foo'); });
-    var next = Sinon.spy();
-    var res = { };
+    const fn = Sinon.spy(function() { return Bluebird.resolve('foo'); });
+    const next = Sinon.spy();
+    const res = { };
     res.status = Sinon.spy(function() { return res; });
     res.send   = Sinon.spy(function() { return res; });
 
-    var wrapped = expressify(fn, 999);
+    const wrapped = expressify(fn, 999);
 
     expect(wrapped).to.be.a('function');
     return wrapped(null, res, next).finally(function() {
       expect(res.status.calledOnce).to.equal(true);
       expect(res.status.calledWith(999)).to.equal(true);
+    });
+  });
+
+  it('should recognize subroutines', function() {
+    const fn = function*() { return 'hello world'; };
+    const next = Sinon.spy();
+    const res = { };
+    res.status = Sinon.spy(function() { return res; });
+    res.send   = Sinon.spy(function() { return res; });
+
+    const wrapped = expressify(fn);
+    expect(wrapped).to.be.a('function');
+
+    return wrapped(null, res, next).finally(function() {
+      expect(res.status).to.be.calledOnce.and.calledWith(200);
+      expect(res.send).to.be.calledOnce.and.calledWith('hello world');
+      expect(next).not.to.be.called;
     });
   });
 

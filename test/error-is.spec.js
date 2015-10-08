@@ -5,13 +5,12 @@
  * @license MIT
  */
 
-var Sinon          = require('sinon');
-var Chai           = require('chai');
+const Chai           = require('chai');
 
 Chai.use(require('chai-as-promised'));
-var expect         = Chai.expect;
+const expect         = Chai.expect;
 
-var errorIs        = require('../lib/error-is');
+const errorIs        = require('../lib/error-is');
 
 describe('errorIs(2)', function() {
 
@@ -29,38 +28,38 @@ describe('errorIs(2)', function() {
   });
 
   it('should check if error name equals criteria', function() {
-    let error = new Error();
+    const error = new Error();
     error.name = 'test';
     expect(errorIs(error, 'test')).to.be.true;
     expect(errorIs(error, 'foo')).to.be.false;
   });
 
   it('should check if error name matches criteria', function() {
-    let error = new Error();
+    const error = new Error();
     error.name = 'test';
     expect(errorIs(error, /^test/)).to.be.true;
     expect(errorIs(error, /^tes$/)).to.be.false;
   });
 
   it('should check if error matches the criteria object', function() {
-    let error = new Error();
+    const error = new Error();
     error.test = { foo: 'bar' };
     expect(errorIs(error, { 'test.foo': 'bar' })).to.be.true;
     expect(errorIs(error, { 'test.bar': 'foo' })).to.be.false;
-  })
+  });
 
   it('should handle undefined error name', function() {
-    let error = new Error();
+    const error = new Error();
     error.name = undefined;
     expect(errorIs(error, 'Error')).to.be.true;
-  })
+  });
 
   it('should handle undefined error name and constructor name', function() {
-    let error = new Error();
+    const error = new Error();
     error.name = undefined;
     error.constructor = undefined;
     expect(errorIs(error, 'Error')).to.be.false;
-  })
+  });
 
   it('should throw if criteria type is unexpected', function() {
     expect(function() {

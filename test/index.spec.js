@@ -13,3 +13,4 @@ require('./deep-for-each.spec.js');
 require('./error-is.spec.js');
 require('./expressify.spec.js');
 require('./unpromisify.spec.js');
+require('./is-generator.spec.js');

@@ -14,3 +14,5 @@ exports.unpromisify = require('./unpromisify');
 exports.symbol      = require('./symbol');
 
 exports.deepForEach = require('./deep-for-each');
+
+exports.isGenerator = require('./is-generator');
