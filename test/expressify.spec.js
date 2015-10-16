@@ -33,7 +33,7 @@ describe('expressify(2)', function() {
       expect(res.status.calledWith(200)).to.equal(true);
       expect(res.send.calledOnce).to.equal(true);
       expect(res.send.calledWith('foo')).to.equal(true);
-      expect(next.callCount).to.equal(0);
+      expect(next.callCount).to.equal(1);
     });
 
   });
@@ -65,29 +65,12 @@ describe('expressify(2)', function() {
     res.status = Sinon.spy(function() { return res; });
     res.send   = Sinon.spy(function() { return res; });
 
-    const wrapped = expressify(fn, 999);
+    const wrapped = expressify(fn, null, 999);
 
     expect(wrapped).to.be.a('function');
     return wrapped(null, res, next).finally(function() {
       expect(res.status.calledOnce).to.equal(true);
       expect(res.status.calledWith(999)).to.equal(true);
-    });
-  });
-
-  it('should recognize subroutines', function() {
-    const fn = function*() { return 'hello world'; };
-    const next = Sinon.spy();
-    const res = { };
-    res.status = Sinon.spy(function() { return res; });
-    res.send   = Sinon.spy(function() { return res; });
-
-    const wrapped = expressify(fn);
-    expect(wrapped).to.be.a('function');
-
-    return wrapped(null, res, next).finally(function() {
-      expect(res.status).to.be.calledOnce.and.calledWith(200);
-      expect(res.send).to.be.calledOnce.and.calledWith('hello world');
-      expect(next).not.to.be.called;
     });
   });
 
